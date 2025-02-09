@@ -1,0 +1,31 @@
+{
+  "devDependencies": {
+    "@types/node": "^22.13.1",
+    "@types/nodemon": "^1.19.6",
+    "nodemon": "^3.1.9",
+    "prisma": "^6.3.1",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "@prisma/client": "^6.3.1",
+    "@types/body-parser": "^1.19.5",
+    "@types/express": "^5.0.0",
+    "body-parser": "^1.20.3",
+    "express": "^4.21.2",
+    "undici-types": "^6.20.0"
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "start": "npm run build && node dist/index.js",
+    "dev": "nodemon --exec ts-node src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

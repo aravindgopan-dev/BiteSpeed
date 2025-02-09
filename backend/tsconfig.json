@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es2020",         // Target ECMAScript version (adjust as needed)
+    "module": "commonjs",       // Module system (commonjs for Node.js)
+    "outDir": "./dist",          // Output directory for compiled JavaScript files
+    "rootDir": "./src",          // Root directory for your TypeScript source files
+    "strict": true,            // Enable strict type checking (recommended)
+    "esModuleInterop": true,   // Enables compatibility with CommonJS modules
+    "skipLibCheck": true,       // Skip type checking of declaration files (faster compilation)
+    "forceConsistentCasingInFileNames": true, // Enforce consistent casing
+    "noImplicitAny": true,       // Raise error on implicit any
+    "noUnusedLocals": true,      // Report unused local variables
+    "noUnusedParameters": true,  // Report unused parameters
+    "noFallthroughCasesInSwitch": true // Report fallthrough cases in switch statements
+  },
+  "include": [
+    "src/**/*.ts"             // Include all TypeScript files in the src directory
+  ],
+  "exclude": [
+    "node_modules"            // Exclude node_modules directory
+  ]
+}
