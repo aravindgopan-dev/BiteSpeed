@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@types/morgan": "^1.9.9",
     "@types/node": "^22.13.1",
     "@types/nodemon": "^1.19.6",
     "nodemon": "^3.1.9",
@@ -18,7 +19,10 @@
     "body-parser": "^1.20.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "undici-types": "^6.20.0"
+    "morgan": "^1.10.0",
+    "undici-types": "^6.20.0",
+    "winston": "^3.17.0",
+    "zod": "^3.24.1"
   },
   "scripts": {
     "build": "rimraf dist && tsc",

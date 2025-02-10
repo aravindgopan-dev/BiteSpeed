@@ -1,7 +1,19 @@
 import { Request, Response, NextFunction } from "express";
 import { PrismaClient } from "@prisma/client";
 import { createError } from "../utils/errorUtils";
+import { z } from "zod";
 
+// Define Zod schema for input validation
+const identifySchema = z.object({
+    email: z.string().email().optional(),
+    phoneNumber: z.string()
+        .regex(/^\d+$/, "Phone number must contain only digits")
+        .min(5, "Phone number must have at least 5 digits")
+        .optional(),
+}).refine(data => data.email || data.phoneNumber, {
+    message: "Email or phone number is required",
+    path: ["email", "phoneNumber"]
+});
 
 export interface IdentifyRequest {
     email?: string;
@@ -21,11 +33,13 @@ const prisma = new PrismaClient();
 
 const controller = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const { email, phoneNumber }: IdentifyRequest = req.body;
-        
-        if (!email && !phoneNumber) {
-            return next(createError("Email or phone number is required", 400));
+        // Validate input using Zod
+        const parsedBody = identifySchema.safeParse(req.body);
+        if (!parsedBody.success) {
+            return next(createError(parsedBody.error.errors[0].message, 400));
         }
+
+        const { email, phoneNumber }: IdentifyRequest = parsedBody.data;
 
         const whereConditions = [];
         if (email) whereConditions.push({ email });
@@ -103,17 +117,16 @@ const controller = async (req: Request, res: Response, next: NextFunction): Prom
             }
         });
 
-       
         const allEmails = [...new Set(
             allContacts
                 .map(contact => contact.email)
-                .filter((email): email is string => email !== null) // Ensure only strings
+                .filter((email): email is string => email !== null)
         )];
 
         const allPhones = [...new Set(
             allContacts
                 .map(contact => contact.phoneNumber)
-                .filter((phone): phone is string => phone !== null) // Ensure only strings
+                .filter((phone): phone is string => phone !== null)
         )];
 
         const secondaryIds = allContacts
@@ -142,16 +155,13 @@ const controller = async (req: Request, res: Response, next: NextFunction): Prom
     }
 };
 
-
-const getidentity=async(_req:Request,res:Response,next:NextFunction)=>{
-    try{
-        const data=await prisma.contact.findMany({})
-        res.send(data)
+const getidentity = async (_req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = await prisma.contact.findMany({});
+        res.send(data);
+    } catch (err) {
+        next(createError("Error in fetching data"));
     }
-    catch(err){
-        next(createError("error in fetching data"))
-    }
-}
-export {getidentity,controller}
+};
 
-
+export { getidentity, controller };
