@@ -17,6 +17,7 @@ A backend service for **Bitespeed** that consolidates customer contact informati
 - **Framework:** Express.js
 - **Database ORM:** Prisma
 - **Database:** PostgreSQL
+- **Input Validation:** Zod
 - **Hosting & Deployment:** Render.com, Docker
 - **Logging:** Morgan
 - **Environment Management:** Dotenv
