@@ -112,9 +112,7 @@ npm run dev
     "body-parser": "^1.20.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "morgan": "^1.10.0",
-    "undici-types": "^6.20.0",
-    "winston": "^3.17.0"
+    "morgan": "^1.10.0"
   }
 }
 ```
