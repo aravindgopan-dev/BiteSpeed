@@ -1,8 +1,8 @@
 import { Router } from "express";
-import identifyController from "../controller/identifyController"
-
+import { getidentity,controller } from "../controller/identifyController";
 const router = Router(); 
 
-router.post("/identify", identifyController); 
+router.post("/identify", controller); 
+router.get("/identify",getidentity)
 
 export default router;

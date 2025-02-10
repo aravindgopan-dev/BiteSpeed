@@ -1,5 +1,7 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { PrismaClient } from "@prisma/client";
+import { createError } from "../utils/errorUtils";
+
 
 export interface IdentifyRequest {
     email?: string;
@@ -17,13 +19,12 @@ export interface IdentifyResponse {
 
 const prisma = new PrismaClient();
 
-const controller = async (req: Request, res: Response): Promise<void> => {
+const controller = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const { email, phoneNumber }: IdentifyRequest = req.body;
         
         if (!email && !phoneNumber) {
-            res.status(400).json({ error: "Email or phone number is required" });
-            return;
+            return next(createError("Email or phone number is required", 400));
         }
 
         const whereConditions = [];
@@ -102,7 +103,7 @@ const controller = async (req: Request, res: Response): Promise<void> => {
             }
         });
 
-        // ✅ Fix TypeScript issue: Ensure emails & phoneNumbers are non-null
+       
         const allEmails = [...new Set(
             allContacts
                 .map(contact => contact.email)
@@ -134,11 +135,23 @@ const controller = async (req: Request, res: Response): Promise<void> => {
         console.error("Error in controller:", error);
         
         if (error instanceof Error && error.message.includes("Unique constraint")) {
-            res.status(409).json({ error: "Contact with the same email or phone number already exists" });
-        } else {
-            res.status(500).json({ error: "Internal Server Error" });
-        }
+            return next(createError("Contact with the same email or phone number already exists", 409));
+        } 
+        
+        next(createError("Internal Server Error", 500));
     }
 };
 
-export default controller;
+
+const getidentity=async(_req:Request,res:Response,next:NextFunction)=>{
+    try{
+        const data=await prisma.contact.findMany({})
+        res.send(data)
+    }
+    catch(err){
+        next(createError("error in fetching data"))
+    }
+}
+export {getidentity,controller}
+
+
