@@ -89,7 +89,7 @@ npm run dev
 ## Additional Features
 - Input validation
 - Error handling
-- Logging with Winston & Morgan
+- Logging with  Morgan
 - Performance optimization
 
 ## Dependencies
